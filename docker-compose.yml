@@ -1,0 +1,21 @@
+version: "3"
+
+services:
+  php:
+    build: ./php-fpm
+    image: php-fpm
+    volumes:
+      - ./php-fpm:/var/run/php-fpm
+      - ./php-fpm/php-fpm.conf:/usr/local/etc/php-fpm.conf
+      - ./php-fpm/conf:/usr/local/etc/php-fpm.d
+      - ./code:/var/www/html
+
+  nginx:
+    image: nginx:1.13
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - ./php-fpm:/etc/nginx/php-fpm
+      - ./code:/usr/share/nginx/html
+    ports:
+      - "8080:8080"
+    restart: always
